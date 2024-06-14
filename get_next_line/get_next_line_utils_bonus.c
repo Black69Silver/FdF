@@ -6,7 +6,7 @@
 /*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:44:19 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/06/02 02:36:33 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:51:47 by ggeorgie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char	*ft_strchr(const char *s, int c)
 	int		len_str;
 	char	*output;
 
+//	printf("@ ft_strchr ascii_number: %s\n", s);
 	i = 0;
 	len_str = ft_strlen(s);
 	if (!s)
@@ -119,5 +120,6 @@ char	*ft_strchr(const char *s, int c)
 		output = (char *)&s[i];
 	else
 		output = NULL;
+//	printf("@ ft_strchr output: %s\n", output);
 	return (output);
 }

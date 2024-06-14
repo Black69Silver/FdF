@@ -6,7 +6,7 @@
 /*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:45:24 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/06/02 02:35:37 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/06/02 20:50:16 by ggeorgie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # include <limits.h>	/* to limit the values of various variable types */
 # include <stdlib.h>	/* to use 'malloc', 'free' */
 # include <unistd.h>	/* to use 'read' */
-//# include <stdio.h>		/* to use 'print' */
+# include <stdio.h>		/* to use 'print' */									// comment out before submission
 
 # define BUFFER_SIZE 1
 

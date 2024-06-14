@@ -6,7 +6,7 @@
 #    By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/04 00:17:04 by ggeorgie          #+#    #+#              #
-#    Updated: 2024/06/05 20:39:32 by ggeorgie         ###   ########.fr        #
+#    Updated: 2024/06/05 00:40:25 by ggeorgie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,18 @@
 
 NAME = fdf
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Wunreachable-code -Ofast
+#CFLAGS = -Wall -Werror -Wextra -Wunreachable-code -g -fsanitize=leak -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -Wunreachable-code -g
+#CFLAGS = -Wall -Werror -Wextra -Wunreachable-code -Ofast						# version for submission
+MLX_REPO = https://github.com/codam-coding-college/MLX42.git
 MLX_PATH = ./MLX42
 MLX_INC = $(MLX_PATH)/include
 MLX_LIB = $(MLX_PATH)/build/libmlx42.a
 GNL_PATH = get_next_line
 GNL_LIB = $(GNL_PATH)/get_next_line.a
+SAN_LDFLAGS = -L ~/Gprojects/LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ~/Gprojects/LeakSanitizer	# remove before submission 	 $(SAN_LDFLAGS)
+#INCLUDES = -I get_next_line \
+		-I $(MLX_PATH)/include
 LIB = -Lget_next_line \
 	-lget_next_line \
 	-lm \
@@ -32,14 +38,14 @@ LIB = -Lget_next_line \
 
 SOURCES = fdf.c \
 		read_input.c \
-		read_utils.c \
 		ft_split.c \
 		colors.c \
-		initialize_drawing.c \
 		draw.c \
+		memory_control.c \
+#		read_utils.c \
+		initialize_drawing.c \
 		interactions.c \
 		draw_utils.c \
-		memory_control.c \
 		utils.c
 
 OBJECTS = $(SOURCES:.c=.o) 
@@ -48,16 +54,16 @@ all: $(NAME)
 
 # Check if the MLX42 submodule is initialized and up-to-date
 $(MLX_PATH)/CMakeLists.txt:
-	@echo "Initializing MLX42 submodule..."
-	@git submodule update --init --recursive
+	echo "Initializing MLX42 submodule..."
+	git submodule update --init --recursive
 
 # Compile the MLX42 library
 $(MLX_LIB): $(MLX_PATH)/CMakeLists.txt
-	@cmake $(MLX_PATH) -B $(MLX_PATH)/build && cmake --build $(MLX_PATH)/build -j4
+	cmake $(MLX_PATH) -B $(MLX_PATH)/build && cmake --build $(MLX_PATH)/build -j4
 
 # Compile the get_next_line dependency archive
 $(GNL_LIB):
-	@make -C $(GNL_PATH)
+	make -C $(GNL_PATH)
 
 # Compile each source file to an binary object file
 # In order to avoid relinking, use '-c' flag. 
@@ -67,18 +73,20 @@ $(GNL_LIB):
 %.o: %.c
 	$(CC) $(CFLAGS) -I $(MLX_INC) -I $(GNL_PATH) -c $< -o $@
 
-$(NAME): $(MLX_LIB) $(GNL_LIB) $(OBJECTS)
-	@$(CC) $(CFLAGS) -I $(MLX_INC) $(OBJECTS) $(LIB) -o $(NAME) $(MLX_LIB)
+$(NAME): $(MLX_LIB) $(GNL_LIB) $(OBJECTS)										# Libraries and dependencies should be compiled before the main program.
+	$(CC) $(CFLAGS) $(SAN_LDFLAGS) -I $(MLX_INC) $(OBJECTS) $(LIB) -o $(NAME) $(MLX_LIB)
 
 # Delete '.o' object and other intermediate files
 clean:
 	rm -f $(OBJECTS)
 	rm -rf $(MLX_PATH)/build
+#	make clean -C get_next_line
 	make clean -C $(GNL_PATH)
 
 # clean + Delete executable and archive files
 fclean: clean
 	rm -f $(NAME)
+#	make fclean -C get_next_line
 	make fclean -C $(GNL_PATH)
 
 re: fclean all
@@ -87,10 +95,10 @@ test: $(NAME)
 #test: re
 
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/simple.fdf
-	./fdf ~/Gprojects/24_FdF/Extras/test_maps/simple_col.fdf
+#	./fdf ~/Gprojects/24_FdF/Extras/test_maps/simple_col.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/10-2.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/10-70.fdf
-	./fdf ~/Gprojects/24_FdF/Extras/test_maps/20-60.fdf
+#	./fdf ~/Gprojects/24_FdF/Extras/test_maps/20-60.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/42.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/50-4.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/100-6.fdf
@@ -105,14 +113,14 @@ test: $(NAME)
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/one_space.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pentenegpos.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pnp_flat.fdf
-	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pylone.fdf
+#	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pylone.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pyra.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pyramide.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/t1.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/t2.fdf
 
 # Maps with errors
-#	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pyr.fdf
+	./fdf ~/Gprojects/24_FdF/Extras/test_maps/pyr.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/empty.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/invalid_values.fdf
 #	./fdf ~/Gprojects/24_FdF/Extras/test_maps/unequal_lines.fdf

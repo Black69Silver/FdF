@@ -6,7 +6,7 @@
 /*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 23:46:06 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/06/05 00:36:05 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:30:09 by ggeorgie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 # include <unistd.h>	/* to use 'close', 'read', 'write' */
 # include <stdlib.h>	/* to use 'exit', 'free', 'malloc' */
 # include <fcntl.h>		/* to use 'open' */ 
-# include <limits.h>	/* to use INT_MIN and INT_MAX */
+# include <limits.h>	/* to use INT_MIN and INT_MAX */						// It's already included in get_next_line - redundant headers are not a problem as 'include' guards are used
 # include <math.h>		/* to use various mathematical functions */
-// # include <stdio.h>		/* to use 'print' */
+# include <stdio.h>		/* to use 'print' */									// comment out before submission
 # include "MLX42/MLX42.h"
 # include "get_next_line_bonus.h"
 
@@ -103,6 +103,8 @@ void			read_input(char *file_name, struct s_draw *ctrl);
 
 // read_utils.c
 void			free_ascii(struct s_draw *ctrl, char **ascii_numbers);
+//int				fdf_atoi_sign(char *ascii_number, int *sign, int i);
+//int				fdf_atoi(struct s_fdf *array, char *ascii_numbers);
 int				fdf_atoi(struct s_draw *ctrl, char **ascii_numbers, int j);
 unsigned long	**initialize_lu_array(int height, int width);
 int				**initialize_int_array(int height, int width);
@@ -120,6 +122,7 @@ char			*ft_substr_end(char *substr, int len_substr, char const *str,
 					unsigned int start);
 char			*ft_substr(char const *str, int start, int len);
 int				word_counter(char const *str, char c);
+//void			free_memory(char ***pointers, int i_ptrs);
 char			**ft_split(char const *s, char c);
 
 // initialize_drawing.c
@@ -140,18 +143,22 @@ void			translate_map(struct s_draw *ctrl, mlx_key_data_t keydata);
 void			rotate_map(struct s_draw *ctrl, mlx_key_data_t keydata);
 void			hook_to_draw(mlx_key_data_t keydata, void *param);
 void			hook(mlx_key_data_t keydata, void *param);
+//void			resize_window(int32_t width, int32_t height, void *param);
 
 // draw_utils.c
 void			limit_translation(struct s_draw *ctrl);
 void			limit_zoom(float *zoom, struct s_draw *ctrl);
 void			draw_border(mlx_image_t *img);
+//void			drawing_error(void);
 void			drawing_error(struct s_draw *ctrl);
-void			closefunc(void *param);
 
 // memory_control.c
+//void			fn_free(char *variable);
 void			fn_free_char_ptr(char ***ptr);
 void			free_lu_array(unsigned long ***array, int rows);
 void			free_int_array(int ***array, int rows);
+//void			free_stack(struct s_stack *stack);
+//void			free_s_fdf(struct s_fdf *an_s_fdf);
 void			free_s_draw(struct s_draw *an_s_draw);
 void			free_s_draw_and_exit(struct s_draw *an_s_draw);
 

@@ -6,7 +6,7 @@
 /*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 23:45:35 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/06/04 23:55:40 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/06/05 00:29:03 by ggeorgie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 
 /**
  * Checks the program for leaks.
-	atexit(leaks);					// Add to main() before return (SUCCESS)
  */
-// void	leaks(void)
-// {
-// 	system("leaks fdf");
-// }
+void	leaks(void)																// comment out before submission
+{
+	system("leaks fdf");	
+}
 
 // Prints a memory allocation failure message.
 int	print_mem_fail(void)
@@ -49,6 +48,8 @@ int	check_extension(char *file_name)
 		if (file_name[i] == '.' && file_name[i + 1] == 'f'
 			&& file_name[i + 2] == 'd' && file_name[i + 3] == 'f')
 		{
+			// (*((*ctrl).array)).name = ft_strjoin("filet de fer / iron wire net of ", file_name);
+			// printf("File name: %s\n", (*((*ctrl).array)).name);
 			return (SUCCESS);
 		}
 		i++;
@@ -72,23 +73,49 @@ int	main(int argc, char **argv)
 {
 	struct s_draw	*ctrl;
 
+	atexit(leaks);																// comment out before submission
 	if (argc != 2)
 	{
+//		printf("wrong number of arguments or file extension is not .fdf\n");
+//		return (FAILURE);
 		print_wrong_argc();
 	}
+//	printf("\nfd[0]: %i: %s\n", open(argv[0], O_RDONLY), argv[0]);
+//	printf("fd[1]: %i: %s\n", open(argv[1], O_RDONLY), argv[1]);
 	ctrl = ft_calloc(1, sizeof(struct s_draw));
 	if (!ctrl)
 	{
 		print_mem_fail();
+//		return (FAILURE);
 	}
 	(*ctrl).array = ft_calloc(1, sizeof(struct s_fdf));
 	if (!(*ctrl).array)
 	{
 		fn_free((char **)&ctrl);
 		print_mem_fail();
+//		return (FAILURE);
 	}
 	check_extension(argv[1]);
+//	printf("going to read_input\n");
 	read_input(argv[1], ctrl);
+
+// // Temp print input
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	while (i < (*array).h)
+// 	{
+// 		j = 0;
+// 		while (j < (*array).w)
+// 		{
+// 			printf("%6d", (*array).z[i][j]);
+// 			j++;
+// 		}
+// 		printf("\n");
+// 		i++;
+// 	}
+
 	setup_window(ctrl);
 	free_s_draw(ctrl);
 	return (SUCCESS);

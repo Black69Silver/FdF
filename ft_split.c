@@ -6,7 +6,7 @@
 /*   By: ggeorgie <ggeorgie@student.42heilbronn.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/28 16:25:04 by ggeorgie          #+#    #+#             */
-/*   Updated: 2024/06/01 23:01:17 by ggeorgie         ###   ########.fr       */
+/*   Updated: 2024/06/02 22:07:29 by ggeorgie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_substr_end(char *substr, int len_substr, char const *str,
 }
 
 /** 
- * Copy in 'substr' string 'len' char's from 'str' string, starting at 'start'. 
+ * Copy in 'substr' string 'len' characters from 'str' string, starting at 'start'. 
  * @param	char	*str: string to be copied from.
  * @param	int		start: position to start copying from.
  * @param	int		len: maximum length of the slot.
@@ -88,10 +88,57 @@ int	word_counter(char const *str, char c)
 			in_word = 1;
 			count++;
 		}
+//		printf("char: %c, count: %i, in_word: %i\n", str[i], count, in_word);
 		i++;
 	}
 	return (count);
 }
+
+/**
+ * Finds the start of the word/sub-string.
+ * @param	char	*str: string to be evaluated.
+ * @param	char	c: delimiter character.
+ * @param	int		i: index for the beginning of the search.
+ * @return	The index for the beginning of the word/sub-string.
+ */
+int	find_start(const char *str, char c, int i)
+{
+	while (str[i] == c && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+/**
+ * Finds the end of the word/sub-string.
+ * @param	char	*str: string to be evaluated.
+ * @param	char	c: delimiter character.
+ * @param	int		i: index for the start of the word/sub-string.
+ * @return	The index for the end of the word/sub-string.
+ */
+int	find_end(const char *str, char c, int i)
+{
+	while (str[i] != c && str[i] != '\0')
+		i++;
+	return (i);
+}
+
+/**
+ * Frees the memory allocated for '**pointers'. The triple pointer is
+ * needed for modification of the original pointer in 'ft_split' function.
+ * @param	char ***pointers: string of pointers.
+ * @param	int	arr[3]: index for the word/sub-string/pointers.
+ * @return	Freed memory.
+ */
+// void	free_memory(char ***pointers, int i_ptrs)
+// {
+// 	while (i_ptrs > 0)
+// 	{
+// 		i_ptrs--;
+// 		free((*pointers)[i_ptrs]);
+// 	}
+// 	free(*pointers);
+// 	*pointers = NULL;
+// }
 
 /**
  * Splits string ’s’ into an array of sub-strings using ’c’ delimiter.
@@ -109,24 +156,33 @@ char	**ft_split(char const *str, char c)
 	char	**pointers;
 	int		arr[4];
 
+//	printf("in ft_split\n");
 	arr[0] = 0;
-	pointers = ft_calloc((word_counter(str, c) + 1), sizeof(char *));
+//	pointers = malloc(sizeof(char *) * (word_counter(str, c) + 1));
+	pointers = ft_calloc((word_counter(str, c) + 1), sizeof(char *));			// + 1 for NULL-terminator
 	if (!pointers || !str)
 		return (NULL);
 	arr[3] = 0;
 	while (str[arr[0]])
 	{
+//		printf("row to split: %s, position within 's' string: %i\n", s, arr[0]);
 		arr[1] = find_start(str, c, arr[0]);
+//		printf("row to split: %s, index for the start of the word: %i\n", s, arr[1]);
 		arr[2] = find_end(str, c, arr[1]);
+//		printf("index for the end of the word: %i\n", arr[2]);
 		if (arr[2] > arr[1])
 		{
 			pointers[arr[3]] = ft_substr(str, arr[1], arr[2] - arr[1]);
 			if (pointers[arr[3]] == NULL)
+//				return (free_memory(&pointers, arr[3]), NULL);
 				return (fn_free_char_ptr(&pointers), NULL);
+//			printf("in ft_split number[%i]: '%s'\n", arr[3], pointers[arr[3]]);
 			arr[3]++;
 		}
 		arr[0] = arr[2];
 	}
 	pointers[arr[3]] = NULL;
+//	printf("in ft_split number[%i]: '%s'\n", arr[3], pointers[arr[3]]);
+//	printf("number of numbers/word/sub-string: %i + '\\0'\n", arr[3]);
 	return (pointers);
 }
