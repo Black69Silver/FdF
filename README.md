@@ -31,7 +31,7 @@ run in command line:
 
 ### Colors   
 Colors of provided test maps were converted based on the assumption that they use the [MiniLibX scheme](https://harm-smits.github.io/42docs/libs/minilibx/colors.html), while [MLX42 scheme](https://github.com/codam-coding-college/MLX42/blob/master/docs/Colors.md) is being used here:  
-`fdf input	=	MiniLibX		=	MLX42`  
+`fdf input	=	MiniLibX		=	MLX42     `  
 `				0xAARRGGBB	=	0xRRGGBBAA`  
 `0x12345678	=	0x12345678	=	0x34567812`  
 `0x123456	=	0xFF123456	=	0x123456FF`  
