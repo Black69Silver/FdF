@@ -30,14 +30,14 @@ run in command line:
 `git submodule add --force git@github.com:codam-coding-college/MLX42.git`
 
 ### Colors   
-Assumed color coding:  
+Colors of provided test maps were converted based on the assumption that they use the [MiniLibX scheme](https://harm-smits.github.io/42docs/libs/minilibx/colors.html), while [MLX42 scheme](https://github.com/codam-coding-college/MLX42/blob/master/docs/Colors.md) is being used here:  
 `fdf input	=	MiniLibX		=	MLX42`  
 `				0xAARRGGBB	=	0xRRGGBBAA`  
 `0x12345678	=	0x12345678	=	0x34567812`  
 `0x123456	=	0xFF123456	=	0x123456FF`  
 `0x1234		=	0x11223344	=	0x22334411`  
 `0x12		=	0x12FFFFFF	=	0xFFFFFF12`  
-Missing channels are assumed to be have value FF  
+Missing channels are assumed to be have value FF.  
 
 ### Leaks   
 LeakSanitizer sees a problems with `mlx_init`, but this is happening inside the library code.  
